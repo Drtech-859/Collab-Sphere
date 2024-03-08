@@ -7,6 +7,7 @@ import {
   CreditCard,
   Layout,
   Settings,
+  MessageSquareMore
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -56,6 +57,11 @@ export const NavItem = ({
       label: "Settings",
       icon: <Settings className="h-4 w-4 mr-2" />,
       href: `/organization/${organization.id}/settings`,
+    },
+    {
+      label: "Chat",
+      icon: <MessageSquareMore className="h-4 w-4 mr-2" />,
+      href: `/organization/${organization.id}/Chat`,
     },
     {
       label: "Billing",
