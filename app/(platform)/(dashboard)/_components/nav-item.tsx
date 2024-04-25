@@ -61,7 +61,7 @@ export const NavItem = ({
     {
       label: "Chat",
       icon: <MessageSquareMore className="h-4 w-4 mr-2" />,
-      href: `/organization/${organization.id}/Chat`,
+      href: `/organization/${organization.id}/chat`,
     },
     {
       label: "Billing",

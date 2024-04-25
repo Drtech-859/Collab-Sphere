@@ -21,6 +21,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/(platform)/(dashboard)/organization/[organizationId]/chat/_components/chatHeader.jsx", "app/(platform)/(dashboard)/organization/[organizationId]/chat/page.jsx", "app/(platform)/(dashboard)/organization/[organizationId]/chat/_components/chatInput.jsx"],
   "exclude": ["node_modules"]
 }

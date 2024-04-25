@@ -3,7 +3,7 @@
 import { useRef, ElementRef } from "react"
 import { useRouter } from "next/navigation"
 import { Router, X } from "lucide-react"
-import {toast} from "sonner"
+import { toast } from "sonner"
 
 import {
     Popover,
@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/popover"
 
 import { useAction } from "@/hooks/use-action"
+import { useProModal } from "@/hooks/use-pro-modal"
 import { createBoard } from "@/actions/create-board"
 
 import { FormInput } from "./form-input"
@@ -35,25 +36,26 @@ export const FormPopover = ({
     align,
     sideOffset = 0
 }: FormPopoverProps) => {
-
+    const proModal = useProModal();
     const closeRef = useRef<ElementRef<"button">>(null)
     const router = useRouter()
 
-    const {execute,fieldErrors} = useAction(createBoard, {
-        onSuccess:(data)=>{
+    const { execute, fieldErrors } = useAction(createBoard, {
+        onSuccess: (data) => {
             toast.success(`Board "${data.title}" created`)
-             closeRef.current?.click()
-             router.push(`/board/${data.id}`)
+            closeRef.current?.click()
+            router.push(`/board/${data.id}`)
         },
-        onError:(error)=>{
+        onError: (error) => {
             toast.error(error)
+            proModal.onOpen()
         }
     })
 
-    const onSubmit = (formData:FormData)=>{
+    const onSubmit = (formData: FormData) => {
         const title = formData.get("title") as string;
         const image = formData.get("image") as string
-        execute({title, image})
+        execute({ title, image })
     }
 
     return (
@@ -72,16 +74,16 @@ export const FormPopover = ({
                 </div>
                 <PopoverClose ref={closeRef} asChild>
                     <Button variant="ghost" className="h-auto w-auto p-2 absolute top-2 right-2 text-neutral-600 border-none">
-                        <X className="h-4 w-4"/>
+                        <X className="h-4 w-4" />
                     </Button>
                 </PopoverClose>
                 <form action={onSubmit} className="space-y-4">
                     <div className="space-y-4">
-                        <FormPicker 
+                        <FormPicker
                             id="image"
                             errors={fieldErrors}
                         />
-                        <FormInput 
+                        <FormInput
                             id="title"
                             label="Board title"
                             type="text"

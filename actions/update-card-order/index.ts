@@ -22,7 +22,7 @@ const handler = async (data: InputType): Promise<ReturnType> => {
   let updatedCards;
 
   try {
-    const transaction = items.map((card) => 
+    const transaction = items.map((card) =>
       db.card.update({
         where: {
           id: card.id,
@@ -40,6 +40,7 @@ const handler = async (data: InputType): Promise<ReturnType> => {
     );
 
     updatedCards = await db.$transaction(transaction);
+
   } catch (error) {
     return {
       error: "Failed to reorder."

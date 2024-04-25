@@ -9,30 +9,47 @@ import { DeleteBoard } from "./schema"
 import { db } from "@/lib/db"
 import { createSafeAction } from "@/lib/create-safe-action"
 import { redirect } from "next/navigation"
+import { createAuditLog } from "@/lib/create-audit-log"
+import { ACTION, ENTITY_TYPE } from "@prisma/client"
+
+import { decreaseAvailableCount } from "@/lib/org-limit"
+import { checkSubscription } from "@/lib/subscription"
 
 
-const handler = async (data : InputType) : Promise <ReturnType> =>{
-    const {userId , orgId} = auth()
+const handler = async (data: InputType): Promise<ReturnType> => {
+    const { userId, orgId } = auth()
 
-    if(!userId || !orgId){
-        return{
-            error : "Unauthorized"
+    if (!userId || !orgId) {
+        return {
+            error: "Unauthorized"
         }
     }
 
-    const { id} = data
+    const isPro = await checkSubscription()
+
+    const { id } = data
     let board
 
-    try{
+    try {
         board = await db.board.delete({
-            where :{
+            where: {
                 id,
                 orgId
             }
         })
-    }catch(error){
+        if (!isPro) {
+            await decreaseAvailableCount()
+        }
+
+        await createAuditLog({
+            entityTitle: board.title,
+            entityId: board.id,
+            entityType: ENTITY_TYPE.BOARD,
+            action: ACTION.DELETE
+        })
+    } catch (error) {
         return {
-            error : "Failed to delete"
+            error: "Failed to delete"
         }
     }
 
@@ -40,4 +57,4 @@ const handler = async (data : InputType) : Promise <ReturnType> =>{
     redirect(`/organization/${orgId}`)
 }
 
-export const deleteBoard = createSafeAction(DeleteBoard,handler)
+export const deleteBoard = createSafeAction(DeleteBoard, handler)
