@@ -49,7 +49,7 @@ const ChatBody = () => {
             }
         };
         fetchMessages();
-    }, []);
+    }, [orgId]);
 
     useEffect(() => {
         setTimeout(() => {
