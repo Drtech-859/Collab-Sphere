@@ -53,7 +53,7 @@ const handler = async (data: InputType): Promise<ReturnType> => {
                         price_data : {
                             currency : "USD",
                             product_data : {
-                                name : "Collabspheere Pro",
+                                name : "Collabsphere Pro",
                                 description : "Unlimited boards for your organization"
                             },
                             unit_amount:500,
